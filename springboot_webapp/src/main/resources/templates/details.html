@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmls:th="http://thymeleaf.org">
+<head>  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${title}"> </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <ul>
+        <li th:text="${user.name}"></li>
+        <li th:text="${user.lastname}"></li>
+        <li th:if="${user.email}"th:text="${user.email}"></li>
+        <li th:if="${not (user.email != null)}" th:text="${'no posee correo'}"></li>
+    </ul>
+    <a th:href="@{/list}" > ver listado </a>
+    <a th:href="@{'/api/foo?message=' + ${title}}" > ver listado </a>
+
+</body>
+</html>

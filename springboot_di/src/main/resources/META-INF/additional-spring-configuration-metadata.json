@@ -1,0 +1,7 @@
+{"properties": [
+  {
+    "name": "config.taxRate",
+    "type": "java.lang.Double",
+    "description": "A description for 'config.taxRate'"
+  }
+]}
