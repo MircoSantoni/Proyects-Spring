@@ -57,9 +57,9 @@ public class ProductController {
     public ResponseEntity<?> create( @Valid @RequestBody Product product, BindingResult result) { //request body es para mapear la solicitud como un objeto java
        // validation.validate(product, result );
 
-        if (result.hasFieldErrors()) {
-            return validation(result);
-        }
+            if (result.hasFieldErrors()) {
+                return validation(result);
+            }
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product)); // binding result es para validar, debe estar a la derecha de la clase que pasamos como argumento
     }
     
