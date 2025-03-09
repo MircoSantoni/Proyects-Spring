@@ -1,4 +1,4 @@
-public class ExerciseOne {
+public class LeetcodeUno {
 //Leetcode 1800
     public static int maxAscendingSum(int[] nums) {    
 
@@ -25,11 +25,11 @@ public class ExerciseOne {
 
 
     public static void main(String[] args) {
-        int[] nums = {10, 20 ,30 ,5 ,500};
+        // int[] nums = {10, 20 ,30 ,5 ,500};
+        int[] nums = {1, 2 ,3 ,1 ,4, 3};
         System.out.println(maxAscendingSum(nums));
     }
 }
-
 
 // Input: nums = [12,17,15,13,10,11,12]
 // Output: 33
