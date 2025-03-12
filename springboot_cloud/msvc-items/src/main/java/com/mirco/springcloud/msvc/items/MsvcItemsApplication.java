@@ -1,8 +1,10 @@
-package com.mirco.springcloud.msvc.items.msvc_items;
+package com.mirco.springcloud.msvc.items;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
+@EnableFeignClients
 @SpringBootApplication
 public class MsvcItemsApplication {
 
@@ -11,3 +13,4 @@ public class MsvcItemsApplication {
 	}
 
 }
+ 
