@@ -6,11 +6,13 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mirco.springcloud.msvc.items.clients.ProductFeignClient;
 import com.mirco.springcloud.msvc.items.entities.Item;
 import com.mirco.springcloud.msvc.items.entities.Product;
 
+@Service
 public class ItemServiceFeign implements ItemService {
 
     @Autowired
