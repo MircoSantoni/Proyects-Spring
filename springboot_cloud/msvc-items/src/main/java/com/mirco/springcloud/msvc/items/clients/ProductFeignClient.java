@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.mirco.springcloud.msvc.items.entities.Product;
 
-@FeignClient(name = "products-msvc", url = "http://localhost:8001")
+@FeignClient(name = "products-msvc")
 public interface ProductFeignClient {
 
     @GetMapping
