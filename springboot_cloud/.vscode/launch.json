@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MsvcItemsApplication<msvc-items>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.andres.springcloud.msvc.items.MsvcItemsApplication",
+            "projectName": "msvc-items",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MsvcProductsApplication<msvc-products>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springcloud.msvc.products.MsvcProductsApplication",
+            "projectName": "msvc-products",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MsvcGatwayApplication<msvc-gatway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springcloud.app.gateway.msvc_gatway.MsvcGatwayApplication",
+            "projectName": "msvc-gatway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
