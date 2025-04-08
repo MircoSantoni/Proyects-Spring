@@ -1,4 +1,4 @@
-package com.mirco.springcloud.msvc.items;
+package com.andres.springcloud.msvc.items;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,4 +13,3 @@ public class MsvcItemsApplication {
 	}
 
 }
- 

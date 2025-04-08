@@ -1,14 +1,15 @@
-package com.mirco.springcloud.msvc.items.entities;
+package com.andres.springcloud.msvc.items.models;
 
 import java.time.LocalDate;
 
 public class Product {
-    
+
     private Long id;
     private String name;
     private Double price;
-    private LocalDate createdAt;
-
+    private LocalDate createAt;
+    private int port;
+    
     public Long getId() {
         return id;
     }
@@ -27,11 +28,17 @@ public class Product {
     public void setPrice(Double price) {
         this.price = price;
     }
-    public LocalDate getCreatedAt() {
-        return createdAt;
+    public LocalDate getCreateAt() {
+        return createAt;
     }
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
+    public void setCreateAt(LocalDate createAt) {
+        this.createAt = createAt;
+    }
+    public int getPort() {
+        return port;
+    }
+    public void setPort(int port) {
+        this.port = port;
     }
 
     
