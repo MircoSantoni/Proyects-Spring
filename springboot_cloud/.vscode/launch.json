@@ -2,6 +2,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Spring Boot-MsvcProductsApplication<msvc-products>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springcloud.msvc.products.MsvcProductsApplication",
+            "projectName": "msvc-products",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=62851 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=msvc-products"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EurekaServerApplication<eureka-server>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springcloud.eurekaserver.app.eureka_server.EurekaServerApplication",
+            "projectName": "eureka-server",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-MsvcItemsApplication<msvc-items>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -12,7 +33,7 @@
         },
         {
             "type": "java",
-            "name": "Spring Boot-MsvcProductsApplication<msvc-products>",
+            "name": "Spring Boot-MsvcProductsApplication<msvc-products> 9001",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.mirco.springcloud.msvc.products.MsvcProductsApplication",
