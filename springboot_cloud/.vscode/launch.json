@@ -39,8 +39,17 @@
             "mainClass": "com.mirco.springcloud.msvc.products.MsvcProductsApplication",
             "projectName": "msvc-products",
             "args": "",
-            "envFile": "${workspaceFolder}/.env",
-            "vmArgs": "-Dserver.port=9001"
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MsvcGatwayApplication<msvc-gatway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springcloud.app.gateway.msvc_gatway.MsvcGatwayApplication",
+            "projectName": "msvc-gatway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
