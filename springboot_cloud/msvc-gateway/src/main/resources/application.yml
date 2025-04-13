@@ -3,11 +3,11 @@ spring:
     gateway:
       routes:
       - id: msvc-products
-        uri: lb://msvc-products
-        predicates:
-        - Path=/api/products/**
+        uri: lb://msvc-products #  lb es de load balancer 
+        predicates: # caracteristicas de ese microservicio
+        - Path=/api/products/** # Esta es la ruta base de este microservicio
         filters:
-        - StripPrefix=2
+        - StripPrefix=2 # en este filtro indico cuantos prefijos tiene la ruta, en este caso 2, api/ y luego /products
       - id: msvc-products
         uri: lb://msvc-items
         predicates:
