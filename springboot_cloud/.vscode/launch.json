@@ -19,7 +19,8 @@
             "mainClass": "com.mirco.springcloud.eurekaserver.app.eureka_server.EurekaServerApplication",
             "projectName": "eureka-server",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=50649 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=eureka-server"
         },
         {
             "type": "java",
@@ -29,7 +30,8 @@
             "mainClass": "com.andres.springcloud.msvc.items.MsvcItemsApplication",
             "projectName": "msvc-items",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=50687 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=msvc-items"
         },
         {
             "type": "java",
@@ -47,6 +49,16 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.mirco.springcloud.app.gateway.msvc_gatway.MsvcGatwayApplication",
+            "projectName": "msvc-gatway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MsvcGatewayApplication<msvc-gatway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springcloud.app.gateway.MsvcGatewayApplication",
             "projectName": "msvc-gatway",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
