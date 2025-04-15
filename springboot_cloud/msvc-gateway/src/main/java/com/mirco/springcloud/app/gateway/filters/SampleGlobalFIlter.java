@@ -1,6 +1,6 @@
 package com.mirco.springcloud.app.gateway.filters;
 
-import java.util.List;
+// import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.http.MediaType;
+// import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -69,7 +69,7 @@ public class SampleGlobalFIlter implements GlobalFilter, Ordered{
                 });
 
                 mutatedExchange.getResponse().getCookies().add("Color", ResponseCookie.from("Color", "Red").build());
-                mutatedExchange.getResponse().getHeaders().setContentType(MediaType.TEXT_PLAIN);
+                // mutatedExchange.getResponse().getHeaders().setContentType(MediaType.TEXT_PLAIN);
             }));
         }
 
