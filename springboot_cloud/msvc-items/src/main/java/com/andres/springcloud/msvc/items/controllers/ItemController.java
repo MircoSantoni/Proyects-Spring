@@ -44,7 +44,7 @@ public class ItemController {
     
     @GetMapping("/{id}")
     public ResponseEntity<?> details(@PathVariable Long id) {
-        Optional<Item> itemOptional = cBreakerFactory.create("items").run(() -> service.findById(id), e -> {
+        Optional<Item> itemOptional = cBreakerFactory.create("items").run(() -> service.findById(id), e -> {    
             System.out.println(e.getMessage());
             logger.error(e.getMessage());
             Product product = new Product();
