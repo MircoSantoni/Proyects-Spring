@@ -21,10 +21,12 @@ public class AppConfig {
                     .slidingWindowSize(10) // tamano de la ventana para calcular los fallos
                     .waitDurationInOpenState(Duration.ofSeconds(100L)) // duracion del estado abierto
                     .permittedNumberOfCallsInHalfOpenState(5)// la cantidad de llamadas en estado semi-
-                    .failureRateThreshold(50) // porcentaje de fallos para que se abra 
+                    .failureRateThreshold(60) // porcentaje de fallos para que se abra 
+                    .slowCallDurationThreshold(Duration.ofSeconds(2L)) // tiempo en el que va a ocurrir una llamada lenta
+                    .slowCallRateThreshold(50)// porcentaje de llamadas lentas para abrir el 
                     .build()) 
                     .timeLimiterConfig(TimeLimiterConfig.custom() // configuracion del timeOut
-                    .timeoutDuration(Duration.ofSeconds(3L)) // duracion del timeout
+                    .timeoutDuration(Duration.ofSeconds(10L)) // duracion del timeout
                     .build())
                     .build();
         });
