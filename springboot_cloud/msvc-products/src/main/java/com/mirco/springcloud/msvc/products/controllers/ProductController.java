@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Product>> listOne(@PathVariable Long id) {
+    public ResponseEntity<Optional<Product>> listOne(@PathVariable Long id) throws InterruptedException {
+        if(id.equals(10L)) {
+            throw new IllegalStateException("Producto no encontrado");
+        }
+        if(id.equals(7L)) {
+            TimeUnit.SECONDS.sleep(3L);
+        }
         Optional<Product> optionalProduct = productService.findById(id);
         return ResponseEntity.ok(optionalProduct);
     }
