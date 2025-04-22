@@ -68,64 +68,71 @@ public class ItemController {
                         "No existe el producto en el microservicio msvc-products"));
     }
 
-    @CircuitBreaker(name = "items", fallbackMethod = "getFallbackMethodProduct")
-    @GetMapping("/details2/{id}")
+    @CircuitBreaker(name = "items", fallbackMethod = "getFallBackMethodProduct")
+    @GetMapping("/details/{id}")
     public ResponseEntity<?> details2(@PathVariable Long id) {
-        Optional<Item> itemOptional = service.findById(id);
-        if (itemOptional.isPresent()) {
-            return ResponseEntity.ok(itemOptional.get());
-        }
-        return ResponseEntity.status(404)
-                .body(Collections.singletonMap(
-                        "message",
-                        "No existe el producto en el microservicio msvc-products"));
-    }
-
-    @CircuitBreaker(name = "items")
-    @TimeLimiter(name = "items", fallbackMethod = "getFallbackMethodProduct2")
-    @GetMapping("/details3/{id}")
-    public CompletableFuture<?> details3(@PathVariable Long id) {
-        return CompletableFuture.supplyAsync(() -> {
             Optional<Item> itemOptional = service.findById(id);
+
             if (itemOptional.isPresent()) {
-                return ResponseEntity.ok(itemOptional.get());
+                    return ResponseEntity.ok(itemOptional.get());
             }
+
             return ResponseEntity.status(404)
-                    .body(Collections.singletonMap(
-                            "message",
-                            "No existe el producto en el microservicio msvc-products"));
-        });
+                            .body(Collections.singletonMap(
+                                            "message",
+                                            "No existe el producto en el microservicio msvc-products"));
     }
 
-    public ResponseEntity<?> getFallbackMethodProduct(Throwable e) {
-        System.out.println(e.getMessage());
-        logger.error(e.getMessage());
+    @CircuitBreaker(name = "items", fallbackMethod = "getFallBackMethodProduct2")
+    @TimeLimiter(name = "items")
+    @GetMapping("/details2/{id}")
+    public CompletableFuture<?> details3(@PathVariable Long id) {
+            return CompletableFuture.supplyAsync(() -> {
+                    Optional<Item> itemOptional = service.findById(id);
 
-        Product product = new Product();
-        product.setCreateAt(LocalDate.now());
-        product.setId(1L);
-        product.setName("Milanesa");
-        product.setPrice(500.00);
+                    if (itemOptional.isPresent()) {
+                            return ResponseEntity.ok(itemOptional.get());
+                    }
 
-        return ResponseEntity.ok(new Item(product, 5));
+                    return ResponseEntity.status(404)
+                                    .body(Collections.singletonMap(
+                                                    "message",
+                                                    "No existe el producto en el microservicio msvc-products"));
+
+            });
     }
 
-    public CompletableFuture<?> getFallbackMethodProduct2(Throwable e) {
-        return CompletableFuture.supplyAsync(() -> {
-
+    public ResponseEntity<?> getFallBackMethodProduct(Throwable e) {
             System.out.println(e.getMessage());
             logger.error(e.getMessage());
 
             Product product = new Product();
-            product.setCreateAt(LocalDate.now());
+            product.setCreateAt(
+                            LocalDate.now());
             product.setId(1L);
-            product.setName("Milanesa");
-            product.setPrice(500.00);
-
-            return ResponseEntity.ok(new Item(product, 5));
-        });
-
+            product.setName("Camara Sony");
+            product.setPrice(
+                            500.00);
+            return ResponseEntity.ok(new Item(product,
+                            5));
     }
+
+    public CompletableFuture<?> getFallBackMethodProduct2(Throwable e) {
+            return CompletableFuture.supplyAsync(() -> {
+                    System.out.println(e.getMessage());
+                    logger.error(e.getMessage());
+
+                    Product product = new Product();
+                    product.setCreateAt(
+                                    LocalDate.now());
+                    product.setId(1L);
+                    product.setName("CircuitBreaker Open <--------->");
+                    product.setPrice(500.00);
+                    return ResponseEntity.ok(new Item(product,
+                                    5));
+            });
+    }
+
 
     // IMPLEMENTACION ORIGINAL SIN CIRCUIT BRAKER
     // @GetMapping("/{id}")

@@ -1,6 +1,6 @@
 resilience4j:
   circuitbreaker:
-    configs: 
+    configs:
       defecto:
         sliding-window-size: 6
         failure-rate-threshold: 50
@@ -13,9 +13,9 @@ resilience4j:
         base-config: defecto
   timelimiter:
     configs:
-      defecto:
-        timeout-duration: 4s
-    instances: 
+     defecto:
+       timeout-duration: 4s
+    instances:
       items:
-        base-config: defecto            
-
+        base-config: defecto
+      
