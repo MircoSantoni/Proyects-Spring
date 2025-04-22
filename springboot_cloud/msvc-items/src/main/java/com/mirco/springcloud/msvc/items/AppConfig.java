@@ -1,4 +1,4 @@
-package com.andres.springcloud.msvc.items;
+package com.mirco.springcloud.msvc.items;
 
 import java.time.Duration;
 

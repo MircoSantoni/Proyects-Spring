@@ -1,4 +1,4 @@
-package com.andres.springcloud.msvc.items.models;
+package com.mirco.springcloud.msvc.items.models;
 
 import java.time.LocalDate;
 
