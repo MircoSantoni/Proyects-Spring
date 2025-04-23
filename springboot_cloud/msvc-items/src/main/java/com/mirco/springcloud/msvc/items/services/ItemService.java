@@ -1,9 +1,9 @@
-package com.andres.springcloud.msvc.items.services;
+package com.mirco.springcloud.msvc.items.services;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.andres.springcloud.msvc.items.models.Item;
+import com.mirco.springcloud.msvc.items.models.Item;
 
 public interface ItemService {
 

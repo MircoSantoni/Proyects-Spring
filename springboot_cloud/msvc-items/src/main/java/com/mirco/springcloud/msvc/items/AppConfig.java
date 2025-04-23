@@ -1,4 +1,4 @@
-package com.andres.springcloud.msvc.items;
+package com.mirco.springcloud.msvc.items;
 
 import java.time.Duration;
 
@@ -26,7 +26,7 @@ public class AppConfig {
                     .slowCallRateThreshold(50)// porcentaje de llamadas lentas para abrir el 
                     .build()) 
                     .timeLimiterConfig(TimeLimiterConfig.custom() // configuracion del timeOut
-                    .timeoutDuration(Duration.ofSeconds(10L)) // duracion del timeout
+                    .timeoutDuration(Duration.ofSeconds(10L)) // duracion del timeout. este tiene mas jerarquia que slowCall
                     .build())
                     .build();
         });

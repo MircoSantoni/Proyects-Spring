@@ -1,4 +1,4 @@
-package com.andres.springcloud.msvc.items;
+package com.mirco.springcloud.msvc.items;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;

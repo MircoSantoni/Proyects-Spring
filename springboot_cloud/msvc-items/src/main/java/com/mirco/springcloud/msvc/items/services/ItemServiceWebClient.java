@@ -1,4 +1,4 @@
-package com.andres.springcloud.msvc.items.services;
+package com.mirco.springcloud.msvc.items.services;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 
-import com.andres.springcloud.msvc.items.models.Item;
-import com.andres.springcloud.msvc.items.models.Product;
+import com.mirco.springcloud.msvc.items.models.Item;
+import com.mirco.springcloud.msvc.items.models.Product;
 
 @Primary
 @Service

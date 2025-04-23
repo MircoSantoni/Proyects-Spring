@@ -1,4 +1,4 @@
-package com.andres.springcloud.msvc.items.services;
+package com.mirco.springcloud.msvc.items.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.andres.springcloud.msvc.items.clients.ProductFeignClient;
-import com.andres.springcloud.msvc.items.models.Item;
-import com.andres.springcloud.msvc.items.models.Product;
+import com.mirco.springcloud.msvc.items.clients.ProductFeignClient;
+import com.mirco.springcloud.msvc.items.models.Item;
+import com.mirco.springcloud.msvc.items.models.Product;
 
 import feign.FeignException;
 
