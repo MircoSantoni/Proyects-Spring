@@ -15,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
 import com.mirco.springcloud.msvc.items.models.Item;
 import com.mirco.springcloud.msvc.items.models.Product;
 
-@Primary
+// @Primary
 @Service
 public class ItemServiceWebClient implements ItemService {
 
@@ -27,15 +27,16 @@ public class ItemServiceWebClient implements ItemService {
 
     @Override
     public List<Item> findAll() {
-        return this.client.build()
-                .get()
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux(Product.class)
+        return this.client.build() // construye el cliente WebClient
+                .get() // tipo de solicitud http
+                .accept(MediaType.APPLICATION_JSON) // Aceptamos respuestas Json
+                .retrieve() // realiza la solicitud
+                .bodyToFlux(Product.class) // convertimos el cuerpo de la respuesta en un flujo de objetos Product
                 .map(product -> new Item(product, new Random().nextInt(10) + 1))
                 .collectList()
                 .block();
-                // block bloquea la aplicacion y la hace no reactiva, quitando una de las ventajas de web client
+        // block bloquea la aplicacion y la hace no reactiva, quitando una de las
+        // ventajas de web client
     }
 
     @Override
@@ -43,15 +44,51 @@ public class ItemServiceWebClient implements ItemService {
         Map<String, Long> params = new HashMap<>();
         params.put("id", id);
         // try {
-            return Optional.of(client.build().get().uri("/{id}", params)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToMono(Product.class)
-                    .map(product -> new Item(product, new Random().nextInt(10) + 1))
-                    .block());
+        return Optional.of(client.build().get().uri("/{id}", params)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(Product.class)// convertimos el cuerpo de la respuesta en un objeto Product
+                .map(product -> new Item(product, new Random().nextInt(10) + 1))
+                .block());
         // } catch (WebClientResponseException e) {
-        //     return Optional.empty();
+        // return Optional.empty();
         // }
+    }
+
+    @Override
+    public Product save(Product product) {
+
+        return client.build()
+                .post()
+                .contentType(MediaType.APPLICATION_JSON) // establecemos que vamos a enviar datos JSON
+                .bodyValue(product)
+                .retrieve()
+                .bodyToMono(Product.class)
+                .block();
+    }
+
+    @Override
+    public Product update(Product product, Long id) {
+        Map<String, Long> params = new HashMap<>();
+        params.put("id", id);
+        return client.build().put().uri("/{id}", params)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(product)
+                .retrieve()
+                .bodyToMono(Product.class)
+                .block();
+    }
+
+    @Override
+    public void delete(Long id) {
+        Map<String, Long> params = new HashMap<>();
+        params.put("/id", id);
+
+        client.build().delete().uri("/{id}", params)
+                .retrieve()// realiza la solicitud
+                .bodyToMono(Void.class) // convertimos el cuerpo de la respuesta en un tipo void
+                .block(); 
     }
 
 }

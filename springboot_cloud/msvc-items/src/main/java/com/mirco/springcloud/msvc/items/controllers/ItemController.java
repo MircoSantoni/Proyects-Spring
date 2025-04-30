@@ -8,6 +8,7 @@ import com.mirco.springcloud.msvc.items.services.ItemService;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import jakarta.ws.rs.Path;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -25,11 +26,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RefreshScope
 @RestController
@@ -46,8 +54,8 @@ public class ItemController {
     private Environment env;
 
 
-    // @Qualifier("itemServiceWebClient") <- esto en el constructor le dice al
     // servicio lo que queremos que inyecte
+//     @Qualifier("itemServiceWebClient")// <- esto en el constructor le dice al
     public ItemController(ItemService service,
             CircuitBreakerFactory ccBreakerFactory) {
         this.service = service;
@@ -78,26 +86,26 @@ public class ItemController {
         return service.findAll();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> details(@PathVariable Long id) {
-        Optional<Item> itemOptional = cBreakerFactory.create("items").run(() -> service.findById(id), e -> {
-            System.out.println(e.getMessage());
-            logger.error(e.getMessage());
-            Product product = new Product();
-            product.setCreateAt(LocalDate.now());
-            product.setId(1L);
-            product.setName("Milanesa");
-            product.setPrice(500.00);
-            return Optional.of(new Item(product, 5));
-        });
-        if (itemOptional.isPresent()) {
-            return ResponseEntity.ok(itemOptional.get());
-        }
-        return ResponseEntity.status(404)
-                .body(Collections.singletonMap(
-                        "message",
-                        "No existe el producto en el microservicio msvc-products"));
-    }
+//     @GetMapping("/{id}")
+//     public ResponseEntity<?> details(@PathVariable Long id) {
+//         Optional<Item> itemOptional = cBreakerFactory.create("items").run(() -> service.findById(id), e -> {
+//             System.out.println(e.getMessage());
+//             logger.error(e.getMessage());
+//             Product product = new Product();
+//             product.setCreateAt(LocalDate.now());
+//             product.setId(1L);
+//             product.setName("Milanesa");
+//             product.setPrice(500.00);
+//             return Optional.of(new Item(product, 5));
+//         });
+//         if (itemOptional.isPresent()) {
+//             return ResponseEntity.ok(itemOptional.get());
+//         }
+//         return ResponseEntity.status(404)
+//                 .body(Collections.singletonMap(
+//                         "message",
+//                         "No existe el producto en el microservicio msvc-products"));
+//     }
 
     @CircuitBreaker(name = "items", fallbackMethod = "getFallBackMethodProduct")
     @GetMapping("/details/{id}")
@@ -166,15 +174,34 @@ public class ItemController {
 
 
     // IMPLEMENTACION ORIGINAL SIN CIRCUIT BRAKER
-    // @GetMapping("/{id}")
-    // public ResponseEntity<?> details(@PathVariable Long id) {
-    // Optional<Item> itemOptional = service.findById(id);
-    // if(itemOptional.isPresent()){
-    // return ResponseEntity.ok(itemOptional.get());
-    // }
-    // return ResponseEntity.status(404)
-    // .body(Collections.singletonMap(
-    // "message",
-    // "No existe el producto en el microservicio msvc-products"));
-    // }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> details(@PathVariable Long id) {
+    Optional<Item> itemOptional = service.findById(id);
+    if(itemOptional.isPresent()){
+    return ResponseEntity.ok(itemOptional.get());
+    }
+    return ResponseEntity.status(404)
+    .body(Collections.singletonMap(
+    "message",
+    "No existe el producto en el microservicio msvc-products"));
+    }
+
+
+    @PostMapping()
+    public ResponseEntity<Product> create(@RequestBody Product product) {
+        return ResponseEntity.ok(service.save(product));
+
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(@RequestBody Product product, @PathVariable Long id) {
+        return ResponseEntity.ok(service.update(product, id));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+
 }

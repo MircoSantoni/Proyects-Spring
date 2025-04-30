@@ -27,13 +27,13 @@ spring:
         uri: lb://msvc-products #  lb es de load balancer 
         predicates: # caracteristicas de ese microservicio
         - Path=/api/products/** # Esta es la ruta base de este microservicio
-        - Header=token, \d+ # Aca le estamos pidiendo un header, se le pueden agregar expresiones regulares
+        # - Header=token, \d+ # Aca le estamos pidiendo un header, se le pueden agregar expresiones regulares
         # - Header=Content-Type, application/json
         # - Method=GET, POST # Aca le estamos pidiendo los tipos de solicitudes que se pueden realizar
         # - Query=color # Aca le estamos pidiendo parametros
         # - Cookie=color, azul # Aca le estamos pidiendo una cookie
         filters:
-        - CircuitBreaker= products
+        - CircuitBreaker=products
         - StripPrefix=2 # en este filtro indico cuantos prefijos tiene la ruta, en este caso 2, api/ y luego /products
         - name: EjemploCookie
           args:
@@ -46,7 +46,7 @@ spring:
         - Path=/api/items/**
         filters:
         - StripPrefix=2
-        - AddRequestHeader=token-request, whatever
-        - AddResponseHeader=token-response, whateverNumber
-        - AddRequestParameter=name, Andres
-        - SetResponseHeader=Content-Type, text/plain
+        # - AddRequestHeader=token-request, whatever
+        # - AddResponseHeader=token-response, whateverNumber
+        # - AddRequestParameter=name, Andres
+        # - SetResponseHeader=Content-Type, text/plain

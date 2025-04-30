@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.mirco.springcloud.msvc.items.clients.ProductFeignClient;
@@ -15,6 +16,7 @@ import com.mirco.springcloud.msvc.items.models.Product;
 import feign.FeignException;
 
 @Service
+@Primary
 public class ItemServiceFeign implements ItemService {
 
     @Autowired
@@ -36,6 +38,21 @@ public class ItemServiceFeign implements ItemService {
         } catch (FeignException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Product save(Product product) {
+        return client.create(product);
+    }
+
+    @Override
+    public Product update(Product product, Long id) {
+        return client.create(product);
+    }
+
+    @Override
+    public void delete(Long id) {
+        client.delete(id);
     }
 
 }
