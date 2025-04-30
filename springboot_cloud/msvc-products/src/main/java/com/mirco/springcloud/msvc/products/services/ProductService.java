@@ -2,7 +2,7 @@ package com.mirco.springcloud.msvc.products.services;
 
 import java.util.*;
 
-import com.mirco.springcloud.msvc.products.entitites.Product;
+import com.mirco.libs.msvc.commons.entities.Product;
 
 public interface ProductService {
     

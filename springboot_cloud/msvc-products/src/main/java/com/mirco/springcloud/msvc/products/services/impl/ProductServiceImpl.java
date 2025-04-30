@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.mirco.springcloud.msvc.products.entitites.Product;
 import com.mirco.springcloud.msvc.products.repositories.ProductRepository;
 import com.mirco.springcloud.msvc.products.services.ProductService;
 
+import com.mirco.libs.msvc.commons.entities.Product;
 import lombok.RequiredArgsConstructor;
 
 @Service
