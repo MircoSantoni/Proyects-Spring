@@ -16,7 +16,7 @@ import com.mirco.springcloud.msvc.items.models.Product;
 import feign.FeignException;
 
 @Service
-@Primary
+// @Primary
 public class ItemServiceFeign implements ItemService {
 
     @Autowired
@@ -47,7 +47,7 @@ public class ItemServiceFeign implements ItemService {
 
     @Override
     public Product update(Product product, Long id) {
-        return client.create(product);
+        return client.update(product, id);
     }
 
     @Override
