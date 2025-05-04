@@ -50,3 +50,10 @@ spring:
         # - AddResponseHeader=token-response, whateverNumber
         # - AddRequestParameter=name, Andres
         # - SetResponseHeader=Content-Type, text/plain
+      - id: msvc-users
+        uri: lb://msvc-users
+        predicates:
+        - Path=/api/users/**
+        filters:
+        - StripPrefix=2
+          
