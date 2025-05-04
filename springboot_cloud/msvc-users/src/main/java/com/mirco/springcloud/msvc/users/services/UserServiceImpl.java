@@ -57,7 +57,9 @@ public class UserServiceImpl implements UserService {
 
             userDb.setEmail(user.getEmail());
             userDb.setUsername(user.getUsername());
-            if (user.isEnabled() != null) {
+            if (user.isEnabled() == null) {
+                userDb.setEnabled(true);
+            } else {
                 userDb.setEnabled(user.isEnabled());
             }
             userDb.setRoles(getRoles(user));

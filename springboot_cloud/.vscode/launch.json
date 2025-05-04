@@ -81,7 +81,8 @@
             "mainClass": "com.mirco.springcloud.configserver.config_server.ConfigServerApplication",
             "projectName": "config-server",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=50477 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=config-server"
         },
         {
             "type": "java",
@@ -89,6 +90,16 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.mirco.springcloud.msvc.users.msvc_users.MsvcUsersApplication",
+            "projectName": "msvc-users",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MsvcUsersApplication<msvc-users>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springcloud.msvc.users.MsvcUsersApplication",
             "projectName": "msvc-users",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
