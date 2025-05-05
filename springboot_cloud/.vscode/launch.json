@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MsvcOauthApplication",
+            "request": "launch",
+            "mainClass": "com.mirco.springboot.msvc.msvc_oauth.MsvcOauthApplication",
+            "projectName": "msvc-oauth"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-MsvcProductsApplication<msvc-products>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
