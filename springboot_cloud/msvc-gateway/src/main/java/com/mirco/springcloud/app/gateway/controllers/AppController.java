@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 public class AppController {
 
-    @GetMapping("/authorize")
+    @GetMapping("/authorized")
     public Map<String, String> authorize(@RequestParam String code) {
         Map<String, String> map = new HashMap<>();
         map.put("code", code);
