@@ -38,33 +38,34 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
+// Esta es la config del servidor de autorizaciones
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
 	@Bean 
-	@Order(1)
-	 SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
+	@Order(1) // Nos aseguramos que en el orden de ejecucion este sea primero
+	 SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) // Este metodo configura l;a cadena de seguridad para el servidor de autorizacion
 			throws Exception {
 		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-				OAuth2AuthorizationServerConfigurer.authorizationServer();
+				OAuth2AuthorizationServerConfigurer.authorizationServer(); // creamos una isntancia del configurador
 
 		http
-			.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+			.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher()) // Nos aseguramos que aplicacamos la config. a las urls que coincidan con los endpoints del servidor de  autorizacion
 			.with(authorizationServerConfigurer, (authorizationServer) ->
 				authorizationServer
 					.oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
 			)
 			.authorizeHttpRequests((authorize) ->
 				authorize
-					.anyRequest().authenticated()
+					.anyRequest().authenticated() // todas las solicitudes entrantes deben estar autenticadas
 			)
 			// Redirect to the login page when not authenticated from the
 			// authorization endpoint
 			.exceptionHandling((exceptions) -> exceptions
 				.defaultAuthenticationEntryPointFor(
-					new LoginUrlAuthenticationEntryPoint("/login"),
-					new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+					new LoginUrlAuthenticationEntryPoint("/login"), // rederigimos al usuario a login cuando requerimos autenticacion 
+					new MediaTypeRequestMatcher(MediaType.TEXT_HTML) // esta redireccion aplica a solicitudes que esperan respuestas Html
 				)
 			);
 
@@ -72,15 +73,16 @@ public class SecurityConfig {
 	}
 
 	@Bean 
-	@Order(2)
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
+	@Order(2) // este filtro se aplica despues del primer filtro
+	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) // Este metodo configura la cadena de filtros para la aplicacion
 			throws Exception {
 		http
-			.authorizeHttpRequests((authorize) -> authorize
-				.anyRequest().authenticated()
+			.authorizeHttpRequests((authorize) -> authorize //Aplicamos esta regla a todas las solicitudes
+				.anyRequest().authenticated()	// solicitamos que el usuario este autenticado para acceder a cualquier url
 			)
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
+			.csrf(csrf -> csrf.disable())
 			.formLogin(Customizer.withDefaults());
 
 		return http.build();
@@ -90,13 +92,13 @@ public class SecurityConfig {
 	UserDetailsService userDetailsService() {
 		UserDetails userDetails = User.builder()
 				.username("mirco")
-				.password("[{noop12345}]")
+				.password("{noop}12345")
 				.roles("USER")
 				.build();
 
 		UserDetails admin = User.builder()
-				.username("mirco")
-				.password("{noop12345}")
+				.username("ariel")
+				.password("{noop}12345")
 				.roles("USER", "ADMIN")
 				.build();
 		return new InMemoryUserDetailsManager(userDetails, admin);
@@ -110,7 +112,7 @@ public class SecurityConfig {
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.redirectUri("http://127.0.0.1:8090/login/oauth2/code/gateway-app")
+				.redirectUri("http://127.0.0.1:8090/login/oauth2/code/client-app")
                 .redirectUri("http://127.0.0.1:8090/authorized")
 				.postLogoutRedirectUri("http://127.0.0.1:8090/logout")
 				.scope(OidcScopes.OPENID)

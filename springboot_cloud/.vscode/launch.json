@@ -110,6 +110,26 @@
             "projectName": "msvc-users",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MsvcOauthApplication<msvc-oauth>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springboot.msvc.oauth.msvc_oauth.MsvcOauthApplication",
+            "projectName": "msvc-oauth",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MsvcOauthApplication<msvc-oauth>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mirco.springboot.msvc.oauth.MsvcOauthApplication",
+            "projectName": "msvc-oauth",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
