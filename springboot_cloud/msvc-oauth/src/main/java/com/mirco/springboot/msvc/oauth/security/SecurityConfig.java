@@ -45,7 +45,7 @@ public class SecurityConfig {
 
 	@Bean 
 	@Order(1) // Nos aseguramos que en el orden de ejecucion este sea primero
-	 SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) // Este metodo configura l;a cadena de seguridad para el servidor de autorizacion
+	 SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) // Este metodo configura la cadena de seguridad para el servidor de autorizacion
 			throws Exception {
 		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
 				OAuth2AuthorizationServerConfigurer.authorizationServer(); // creamos una isntancia del configurador
@@ -97,10 +97,11 @@ public class SecurityConfig {
 				.build();
 
 		UserDetails admin = User.builder()
-				.username("ariel")
+				.username("admin")
 				.password("{noop}12345")
 				.roles("USER", "ADMIN")
 				.build();
+
 		return new InMemoryUserDetailsManager(userDetails, admin);
 	}
 
