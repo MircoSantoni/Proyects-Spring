@@ -5,6 +5,7 @@ import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -12,6 +13,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -19,13 +21,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -33,7 +36,12 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
+// import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+// import org.springframework.security.core.userdetails.User;
+// import org.springframework.security.core.userdetails.UserDetails;
+// import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -43,81 +51,96 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Bean
 	@Order(1) // Nos aseguramos que en el orden de ejecucion este sea primero
-	 SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) // Este metodo configura la cadena de seguridad para el servidor de autorizacion
+	SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) // Este metodo configura la cadena de
+																					// seguridad para el servidor de
+																					// autorizacion
 			throws Exception {
-		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-				OAuth2AuthorizationServerConfigurer.authorizationServer(); // creamos una isntancia del configurador
+		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer
+				.authorizationServer(); // creamos una isntancia del configurador
 
 		http
-			.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher()) // Nos aseguramos que aplicacamos la config. a las urls que coincidan con los endpoints del servidor de  autorizacion
-			.with(authorizationServerConfigurer, (authorizationServer) ->
-				authorizationServer
-					.oidc(Customizer.withDefaults())	// Enable OpenID Connect 1.0
-			)
-			.authorizeHttpRequests((authorize) ->
-				authorize
-					.anyRequest().authenticated() // todas las solicitudes entrantes deben estar autenticadas
-			)
-			// Redirect to the login page when not authenticated from the
-			// authorization endpoint
-			.exceptionHandling((exceptions) -> exceptions
-				.defaultAuthenticationEntryPointFor(
-					new LoginUrlAuthenticationEntryPoint("/login"), // rederigimos al usuario a login cuando requerimos autenticacion 
-					new MediaTypeRequestMatcher(MediaType.TEXT_HTML) // esta redireccion aplica a solicitudes que esperan respuestas Html
+				.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher()) // Nos aseguramos que aplicacamos
+																						// la config. a las urls que
+																						// coincidan con los endpoints
+																						// del servidor de autorizacion
+				.with(authorizationServerConfigurer, (authorizationServer) -> authorizationServer
+						.oidc(Customizer.withDefaults()) // Enable OpenID Connect 1.0
 				)
-			);
+				.authorizeHttpRequests((authorize) -> authorize
+						.anyRequest().authenticated() // todas las solicitudes entrantes deben estar autenticadas
+				)
+				// Redirect to the login page when not authenticated from the
+				// authorization endpoint
+				.exceptionHandling((exceptions) -> exceptions
+						.defaultAuthenticationEntryPointFor(
+								new LoginUrlAuthenticationEntryPoint("/login"), // rederigimos al usuario a login cuando
+																				// requerimos autenticacion
+								new MediaTypeRequestMatcher(MediaType.TEXT_HTML) // esta redireccion aplica a
+																					// solicitudes que esperan
+																					// respuestas Html
+						));
 
 		return http.build();
 	}
 
-	@Bean 
+	@Bean
 	@Order(2) // este filtro se aplica despues del primer filtro
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) // Este metodo configura la cadena de filtros para la aplicacion
+	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) // Este metodo configura la cadena de filtros para
+																		// la aplicacion
 			throws Exception {
 		http
-			.authorizeHttpRequests((authorize) -> authorize //Aplicamos esta regla a todas las solicitudes
-				.anyRequest().authenticated()	// solicitamos que el usuario este autenticado para acceder a cualquier url
-			)
-			// Form login handles the redirect to the login page from the
-			// authorization server filter chain
-			.csrf(csrf -> csrf.disable())
-			.formLogin(Customizer.withDefaults());
+				.authorizeHttpRequests((authorize) -> authorize // Aplicamos esta regla a todas las solicitudes
+						.anyRequest().authenticated() // solicitamos que el usuario este autenticado para acceder a
+														// cualquier url
+				)
+				// Form login handles the redirect to the login page from the
+				// authorization server filter chain
+				.csrf(csrf -> csrf.disable())
+				.formLogin(Customizer.withDefaults());
 
 		return http.build();
 	}
 
-	@Bean 
-	UserDetailsService userDetailsService() {
-		UserDetails userDetails = User.builder()
-				.username("mirco")
-				.password("{noop}12345")
-				.roles("USER")
-				.build();
+	// @Bean
+	// UserDetailsService userDetailsService() {
+	// UserDetails userDetails = User.builder()
+	// .username("mirco")
+	// .password("{noop}12345")
+	// .roles("USER")
+	// .build();
 
-		UserDetails admin = User.builder()
-				.username("admin")
-				.password("{noop}12345")
-				.roles("USER", "ADMIN")
-				.build();
+	// UserDetails admin = User.builder()
+	// .username("admin")
+	// .password("{noop}12345")
+	// .roles("USER", "ADMIN")
+	// .build();
 
-		return new InMemoryUserDetailsManager(userDetails, admin);
-	}
+	// return new InMemoryUserDetailsManager(userDetails, admin);
+	// }
 
-	@Bean 
+
+
+	@Bean
 	RegisteredClientRepository registeredClientRepository() {
 		RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
 				.clientId("gateway-app")
-				.clientSecret("{noop}12345")
+				// .clientSecret("{noop}12345")
+				.clientSecret(passwordEncoder.encode("12345"))
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 				.redirectUri("http://127.0.0.1:8090/login/oauth2/code/client-app")
-                .redirectUri("http://127.0.0.1:8090/authorized")
+				.redirectUri("http://127.0.0.1:8090/authorized")
 				.postLogoutRedirectUri("http://127.0.0.1:8090/logout")
 				.scope(OidcScopes.OPENID)
 				.scope(OidcScopes.PROFILE)
+				.scope("write")
+				.scope("read")
 				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
 				.build();
 
@@ -137,14 +160,13 @@ public class SecurityConfig {
 		return new ImmutableJWKSet<>(jwkSet);
 	}
 
-	private static KeyPair generateRsaKey() { 
+	private static KeyPair generateRsaKey() {
 		KeyPair keyPair;
 		try {
 			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
 			keyPairGenerator.initialize(2048);
 			keyPair = keyPairGenerator.generateKeyPair();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 		return keyPair;
@@ -158,6 +180,19 @@ public class SecurityConfig {
 	@Bean
 	AuthorizationServerSettings authorizationServerSettings() {
 		return AuthorizationServerSettings.builder().build();
+	}
+
+	@Bean
+	OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
+		return context -> {
+			if (context.getTokenType().getValue() == OAuth2TokenType.ACCESS_TOKEN.getValue()) {
+				Authentication principal = context.getPrincipal();
+				context.getClaims()
+						.claim("data: ", "Data adicional no sensible")
+						.claim("roles: ", principal.getAuthorities().stream()
+								.map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+			}
+		};
 	}
 
 }
