@@ -123,8 +123,6 @@ public class SecurityConfig {
 	// return new InMemoryUserDetailsManager(userDetails, admin);
 	// }
 
-
-
 	@Bean
 	RegisteredClientRepository registeredClientRepository() {
 		RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
