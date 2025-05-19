@@ -3,7 +3,6 @@ package com.mirco.springboot.msvc.oauth.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class UsersService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Map< String , String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put("username", username);
 
         try {
@@ -48,6 +47,7 @@ public class UsersService implements UserDetailsService {
             throw new UsernameNotFoundException(
                     "Error en el login, no existe el users '" + username + "' en el sistema");
         }
+
     }
 
 }

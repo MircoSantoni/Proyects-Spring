@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class SampleCookieGatewayFilterFactory extends AbstractGatewayFilterFactory<SampleCookieGatewayFilterFactory.ConfigurationCookie> {
+public class SampleCookieGatewayFIlterFactory extends AbstractGatewayFilterFactory<SampleCookieGatewayFIlterFactory.ConfigurationCookie> {
 
     
-    private final Logger logger = LoggerFactory.getLogger(SampleCookieGatewayFilterFactory.class);
-    public SampleCookieGatewayFilterFactory() {
+    private final Logger logger = LoggerFactory.getLogger(SampleCookieGatewayFIlterFactory.class);
+    public SampleCookieGatewayFIlterFactory() {
         super(ConfigurationCookie.class);
     }
     
