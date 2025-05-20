@@ -63,7 +63,7 @@ public class SecurityConfig {
                                 Collection<GrantedAuthority> authorities = roles.stream()
                                         .map(SimpleGrantedAuthority::new)
                                         .collect(Collectors.toList());
-
+                                
                                 return Mono.just(new JwtAuthenticationToken(source, authorities));
                             }
                         })))
