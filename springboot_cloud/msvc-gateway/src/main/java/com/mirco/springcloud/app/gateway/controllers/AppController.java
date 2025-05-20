@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AppController {
 
     @GetMapping("/authorized")
-    public Map<String, String> authorize(@RequestParam String code) {
+    public Map<String, String> authorized(@RequestParam String code) {
         Map<String, String> map = new HashMap<>();
         map.put("code", code);
         return map;
     }
 
     @PostMapping("/logout")
-    public Map<String, String> logoutMap() {
+    public Map<String, String> logout() {
         return Collections.singletonMap("logout", "Ok");
     }
-
 }
