@@ -2,6 +2,8 @@ package com.mirco.springcloud.app.gateway.filters;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,8 @@ import jakarta.servlet.ServletResponse;
 @Component
 public class SampleGlobalFIlter implements Filter, Ordered {
 
+    private final Logger logger = LoggerFactory.getLogger(SampleGlobalFIlter.class);
+
     @Override
     public int getOrder() {
         return 100;
@@ -22,7 +26,9 @@ public class SampleGlobalFIlter implements Filter, Ordered {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        chain.doFilter(request, response);
+
+                logger.info("Llamada filtro SampleGlobalFiltor::doFilter");
+                chain.doFilter(request, response);
     }
 }
 // import java.util.Optional;
