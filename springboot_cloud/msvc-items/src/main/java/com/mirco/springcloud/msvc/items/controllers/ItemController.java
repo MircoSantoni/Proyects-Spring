@@ -65,6 +65,7 @@ public class ItemController {
     @GetMapping("/fetch-configs")
     public ResponseEntity<?> fetchConfigs(@Value("${server.port}") String port) {
         Map<String, String> json = new HashMap<>();
+        logger.info("Llamada a metodo del controller ItemController::fetch-configs()");
         json.put("text", text);
         json.put("Puerto:", port);
         logger.info(text);
