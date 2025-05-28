@@ -35,8 +35,8 @@ public class SecurityConfig {
             authz.requestMatchers("/authorized", "/logout").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/items", "/api/products", "/api/users").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/items/{id}", "/api/products/{id}", "/api/users/{id}")
-                    .hasAnyRole("ADMIN", "USER")
-                    .requestMatchers("/api/items/**", "/api/products/**", "/api/users/**").hasRole("ADMIN")
+                    .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                    .requestMatchers("/api/items/**", "/api/products/**", "/api/users/**").hasAuthority("ADMIN")
                     .anyRequest().authenticated();
         }).csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

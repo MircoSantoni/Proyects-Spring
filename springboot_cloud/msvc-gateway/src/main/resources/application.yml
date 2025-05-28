@@ -46,19 +46,19 @@ spring:
     gateway:
       mvc:
         routes:
-        - id: msvc-products
-          uri: lb://msvc-products #  lb es de load balancer 
-          predicates: # caracteristicas de ese microservicio
-          - Path=/api/products/** # Esta es la ruta base de este microservicio
-          # - Header=token, \d+ # Aca le estamos pidiendo un header, se le pueden agregar expresiones regulares
-          # - Header=Content-Type, application/json
-          # - Method=GET, POST # Aca le estamos pidiendo los tipos de solicitudes que se pueden realizar
+        # - id: msvc-products
+        #   uri: lb://msvc-products #  lb es de load balancer 
+        #   predicates: # caracteristicas de ese microservicio
+        #   - Path=/api/products/** # Esta es la ruta base de este microservicio
+        #   # - Header=token, \d+ # Aca le estamos pidiendo un header, se le pueden agregar expresiones regulares
+        #   # - Header=Content-Type, application/json
+        #   # - Method=GET, POST # Aca le estamos pidiendo los tipos de solicitudes que se pueden realizar
           # - Query=color # Aca le estamos pidiendo parametros
-          # - Cookie=color, azul # Aca le estamos pidiendo una cookie
-          filters:
-          - CircuitBreaker=products
-          - StripPrefix=2 # en este filtro indico cuantos prefijos tiene la ruta, en este caso 2, api/ y luego /products
-          # - name: EjemploCookie
+          # # - Cookie=color, azul # Aca le estamos pidiendo una cookie
+          # filters:
+          # - CircuitBreaker=products
+          # - StripPrefix=2 # en este filtro indico cuantos prefijos tiene la ruta, en este caso 2, api/ y luego /products
+          # # - name: EjemploCookie
           #   args:
           #       name: User
           #       message: Hola este es el mensaje personalizado para el microservicio productos
