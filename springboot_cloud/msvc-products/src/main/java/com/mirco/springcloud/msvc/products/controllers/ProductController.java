@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
@@ -31,8 +32,9 @@ public class ProductController {
         private final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @GetMapping
-    public ResponseEntity<List<Product>> list() {
-        logger.info("Ingresanod al metodo del controller ProductController::list");
+    public ResponseEntity<List<Product>> list(@RequestHeader(name="message-request", required=false) String message ) {
+        logger.info("Mensaje del request: {}", message);
+        logger.info("Ingresando al metodo del controller ProductController::list");
         return ResponseEntity.ok(this.productService.findAll());
     }
 
