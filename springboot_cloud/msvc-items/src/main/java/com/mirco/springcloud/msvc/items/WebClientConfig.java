@@ -26,6 +26,12 @@ public class WebClientConfig {
     @Bean
     WebClient webClient(WebClient.Builder webClientBuilder, ReactorLoadBalancerExchangeFilterFunction lbFunction, 
     @Value("${config.baseurl.endpoint.msvc-products}") String url) {
-        return webClientBuilder.baseUrl(url).filter(lbFunction).build();
+        return webClientBuilder
+        .baseUrl(url)
+        .filter(lbFunction)
+        .filter((request, next) -> {
+            return next.exchange(request);
+        })
+        .build();
     }
 }
