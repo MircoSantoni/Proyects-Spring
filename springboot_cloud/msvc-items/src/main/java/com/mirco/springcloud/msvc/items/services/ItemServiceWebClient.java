@@ -19,15 +19,15 @@ import com.mirco.springcloud.msvc.items.models.Product;
 @Service
 public class ItemServiceWebClient implements ItemService {
 
-    private final WebClient.Builder client;
+    private final WebClient client;
 
-    public ItemServiceWebClient(Builder client) {
+    public ItemServiceWebClient(WebClient client) {
         this.client = client;
     }
 
     @Override
     public List<Item> findAll() {
-        return this.client.build() // construye el cliente WebClient
+        return this.client // construye el cliente WebClient
                 .get() // tipo de solicitud http
                 .accept(MediaType.APPLICATION_JSON) // Aceptamos respuestas Json
                 .retrieve() // realiza la solicitud
@@ -44,7 +44,7 @@ public class ItemServiceWebClient implements ItemService {
         Map<String, Long> params = new HashMap<>();
         params.put("id", id);
         // try {
-        return Optional.of(client.build().get().uri("/{id}", params)
+        return Optional.of(client.get().uri("/{id}", params)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(Product.class)// convertimos el cuerpo de la respuesta en un objeto Product
@@ -58,7 +58,7 @@ public class ItemServiceWebClient implements ItemService {
     @Override
     public Product save(Product product) {
 
-        return client.build()
+        return client
                 .post()
                 .contentType(MediaType.APPLICATION_JSON) // establecemos que vamos a enviar datos JSON
                 .bodyValue(product)
@@ -71,7 +71,7 @@ public class ItemServiceWebClient implements ItemService {
     public Product update(Product product, Long id) {
         Map<String, Long> params = new HashMap<>();
         params.put("id", id);
-        return client.build().put().uri("/{id}", params)
+        return client.put().uri("/{id}", params)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(product)
@@ -85,7 +85,7 @@ public class ItemServiceWebClient implements ItemService {
         Map<String, Long> params = new HashMap<>();
         params.put("/id", id);
 
-        client.build().delete().uri("/{id}", params)
+        client.delete().uri("/{id}", params)
                 .retrieve()// realiza la solicitud
                 .bodyToMono(Void.class) // convertimos el cuerpo de la respuesta en un tipo void
                 .block(); 
