@@ -31,7 +31,7 @@ public class MsvcGatewayApplication {
 			.setId("products")
 			.setStatusCodes("500")
 			.setFallbackPath("forward:/api/items/5")))
-			.before(stripPrefix(2)).build();
+			.build();
 	}
 
 }
