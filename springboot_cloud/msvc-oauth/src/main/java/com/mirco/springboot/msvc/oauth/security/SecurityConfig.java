@@ -191,8 +191,8 @@ public class SecurityConfig {
 			if (context.getTokenType().getValue() == OAuth2TokenType.ACCESS_TOKEN.getValue()) {
 				Authentication principal = context.getPrincipal();
 				context.getClaims()
-						.claim("data: ", "Data adicional no sensible")
-						.claim("roles: ", principal.getAuthorities().stream()
+						.claim("data", "Data adicional no sensible")
+						.claim("roles", principal.getAuthorities().stream()
 								.map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 			}
 		};

@@ -44,44 +44,45 @@ spring:
             issuer-uri: http://127.0.0.1:9100
   cloud:
     gateway:
-      routes:
-      - id: msvc-products
-        uri: lb://msvc-products #  lb es de load balancer 
-        predicates: # caracteristicas de ese microservicio
-        - Path=/api/products/** # Esta es la ruta base de este microservicio
-        # - Header=token, \d+ # Aca le estamos pidiendo un header, se le pueden agregar expresiones regulares
-        # - Header=Content-Type, application/json
-        # - Method=GET, POST # Aca le estamos pidiendo los tipos de solicitudes que se pueden realizar
-        # - Query=color # Aca le estamos pidiendo parametros
-        # - Cookie=color, azul # Aca le estamos pidiendo una cookie
-        filters:
-        - CircuitBreaker=products
-        - StripPrefix=2 # en este filtro indico cuantos prefijos tiene la ruta, en este caso 2, api/ y luego /products
-        - name: EjemploCookie
-          args:
-              name: User
-              message: Hola este es el mensaje personalizado para el microservicio productos
-              value: QUe-onda-papuh
-      - id: msvc-items
-        uri: lb://msvc-items
-        predicates:
-        - Path=/api/items/**
-        filters:
-        - StripPrefix=2
-        # - AddRequestHeader=token-request, whatever
-        # - AddResponseHeader=token-response, whateverNumber
-        # - AddRequestParameter=name, Andres
-        # - SetResponseHeader=Content-Type, text/plain
-      - id: msvc-users
-        uri: lb://msvc-users
-        predicates:
-        - Path=/api/users/**
-        filters:
-        - StripPrefix=2
-      - id: msvc-oauth
-        uri: lb://msvc-oauth
-        predicates:
-        - Path=/api/security/**
-        filters:
-        - StripPrefix=2
-          
+      mvc:
+        routes:
+        # - id: msvc-products
+        #   uri: lb://msvc-products #  lb es de load balancer 
+        #   predicates: # caracteristicas de ese microservicio
+        #   - Path=/api/products/** # Esta es la ruta base de este microservicio
+        #   # - Header=token, \d+ # Aca le estamos pidiendo un header, se le pueden agregar expresiones regulares
+        #   # - Header=Content-Type, application/json
+        #   # - Method=GET, POST # Aca le estamos pidiendo los tipos de solicitudes que se pueden realizar
+          # - Query=color # Aca le estamos pidiendo parametros
+          # # - Cookie=color, azul # Aca le estamos pidiendo una cookie
+          # filters:
+          # - CircuitBreaker=products
+          # - StripPrefix=2 # en este filtro indico cuantos prefijos tiene la ruta, en este caso 2, api/ y luego /products
+          # # - name: EjemploCookie
+          #   args:
+          #       name: User
+          #       message: Hola este es el mensaje personalizado para el microservicio productos
+          #       value: QUe-onda-papuh
+        - id: msvc-items
+          uri: lb://msvc-items
+          predicates:
+          - Path=/api/items/**
+          filters:
+          - StripPrefix=2
+          # - AddRequestHeader=token-request, whatever
+          # - AddResponseHeader=token-response, whateverNumber
+          # - AddRequestParameter=name, Andres
+          # - SetResponseHeader=Content-Type, text/plain
+        - id: msvc-users
+          uri: lb://msvc-users
+          predicates:
+          - Path=/api/users/**
+          filters:
+          - StripPrefix=2
+        - id: msvc-oauth
+          uri: lb://msvc-oauth
+          predicates:
+          - Path=/api/security/**
+          filters:
+          - StripPrefix=2
+            

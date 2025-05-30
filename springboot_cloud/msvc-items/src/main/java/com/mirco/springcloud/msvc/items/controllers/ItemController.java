@@ -8,7 +8,6 @@ import com.mirco.springcloud.msvc.items.services.ItemService;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
-import jakarta.ws.rs.Path;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -57,7 +56,7 @@ public class ItemController {
 //   @Qualifier("itemServiceWebClient")  // <- esto en el constructor le dice al
 // servicio lo que queremos que inyecte
 
-    public ItemController(@Qualifier("itemServiceFeign")ItemService service,
+    public ItemController(@Qualifier("itemServiceWebClient")ItemService service,
             CircuitBreakerFactory ccBreakerFactory) {
         this.service = service;
         this.cBreakerFactory = ccBreakerFactory;
@@ -66,6 +65,7 @@ public class ItemController {
     @GetMapping("/fetch-configs")
     public ResponseEntity<?> fetchConfigs(@Value("${server.port}") String port) {
         Map<String, String> json = new HashMap<>();
+        logger.info("Llamada a metodo del controller ItemController::fetch-configs");
         json.put("text", text);
         json.put("Puerto:", port);
         logger.info(text);
@@ -83,7 +83,10 @@ public class ItemController {
     @GetMapping
     public List<Item> list(@RequestParam(required = false) String name,
             @RequestHeader(name = "token-request", required = false) String token) {
-        System.out.println(name + token);
+
+        logger.info("Llamada a metodo del controller ItemController::list()");
+        logger.info("Request parameter: {}", name);
+        logger.info("Token: {}", token);
         return service.findAll();
     }
 
@@ -190,18 +193,21 @@ public class ItemController {
 
     @PostMapping()
     public ResponseEntity<Product> create(@RequestBody Product product) {
+        logger.info("Product creando: {}", product);
         return ResponseEntity.ok(service.save(product));
 
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(@RequestBody Product product, @PathVariable Long id) {
+        logger.info("Product actualzado: {}", product);
         return ResponseEntity.ok(service.update(product, id));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
+        logger.info("Product id eliminado: {}", id);
         service.delete(id);
     }
 
