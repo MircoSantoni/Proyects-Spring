@@ -56,7 +56,7 @@ public class ItemController {
 //   @Qualifier("itemServiceWebClient")  // <- esto en el constructor le dice al
 // servicio lo que queremos que inyecte
 
-    public ItemController(@Qualifier("itemServiceFeign")ItemService service,
+    public ItemController(@Qualifier("itemServiceWebClient")ItemService service,
             CircuitBreakerFactory ccBreakerFactory) {
         this.service = service;
         this.cBreakerFactory = ccBreakerFactory;
