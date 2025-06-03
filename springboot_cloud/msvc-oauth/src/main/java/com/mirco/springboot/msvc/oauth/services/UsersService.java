@@ -20,6 +20,8 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import com.mirco.springboot.msvc.oauth.models.User;
 
+import io.micrometer.tracing.Tracer;
+
 @Service
 public class UsersService implements UserDetailsService {
 
@@ -27,6 +29,10 @@ public class UsersService implements UserDetailsService {
 
     @Autowired
     private WebClient client;
+
+    @Autowired
+    private Tracer tracer;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -48,6 +54,8 @@ public class UsersService implements UserDetailsService {
                     .collect(Collectors.toList());
 
             logger.info("Se ha iniciado el login con exito by username: {}", user);
+            tracer.currentSpan().tag("succes.login.message", "Se ha iniciado el login con exito by username: {}" + user);
+
 
             return new org.springframework.security.core.userdetails.User(
                     user.getUsername(),
@@ -60,7 +68,10 @@ public class UsersService implements UserDetailsService {
 
         } catch (WebClientResponseException e) {
             var error = "Error en el login, no existe el users '" + username + "' en el sistema";
+            
             logger.error(error);
+            tracer.currentSpan().tag("error.login.message", error+ " : " + e.getMessage());
+
             throw new UsernameNotFoundException(error);
         }
 
